@@ -1,0 +1,9 @@
+﻿<Application x:Class="UniversalParser.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:UniversalParser"
+             StartupUri="Views/MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary Source="Views/Resourses/Style.xaml"/>
+    </Application.Resources>
+</Application>

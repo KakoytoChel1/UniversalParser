@@ -1,0 +1,269 @@
+﻿<Window x:Class="UniversalParser.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UniversalParser"
+        xmlns:vm="clr-namespace:UniversalParser.ViewModels"
+        mc:Ignorable="d"
+        Title="MainWindow" AllowsTransparency="True"
+        x:Name="Window"
+        Height="650"
+        Width="350"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        MaxHeight="650"
+        MaxWidth="350"
+        MinHeight="650"
+        MinWidth="350"
+        Background="{StaticResource color}"
+        BorderThickness="2"
+        BorderBrush="White">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome/>
+    </WindowChrome.WindowChrome>
+
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+    
+    <Grid WindowChrome.IsHitTestVisibleInChrome="True">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Border Grid.RowSpan="4"
+                Margin="0,70,0,0"
+                Background="#1a1c1d"
+                CornerRadius="35,35,0,0">
+        </Border>
+
+        <!--recived data from the web page-->
+        <TextBox
+            Background="Transparent"
+            BorderThickness="0"
+            Grid.RowSpan="3"
+            Margin="15,100,15,0"
+            Foreground="White"
+            Text="{Binding Text}"
+            FontSize="15"
+            FontWeight="Bold"
+            TextWrapping="Wrap"/>
+
+        <!--*********************-->
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Border 
+                Grid.ColumnSpan="3"
+                VerticalAlignment="Bottom"
+                Height="50"
+                Margin="10,0,10,25"
+                Background="#26292a"
+                CornerRadius="15"/>
+
+            <!--start button-->
+            <Button 
+                Style="{DynamicResource RoundButtonStyle}" 
+                Height="60" 
+                Width="60" 
+                Margin="35,82,20,20"
+                Background="{StaticResource color}"
+                BorderThickness="0"
+                Command="{Binding StartparsCommand}">
+
+                <Image Source="images/homeButton.png" Width="40"/>
+            </Button>
+
+            <TextBlock
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                Height="40"
+                VerticalAlignment="Bottom"
+                Margin="0,0,0,30"
+                Foreground="White"
+                Text="{Binding StateText}"
+                FontSize="15"
+                TextAlignment="Center"
+                Padding="0,10,60,0"/>
+
+        </Grid>
+
+        <!--close buttom-->
+        <Button Style="{DynamicResource Buttons}" Height="35"
+                Width="35"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Command="{Binding CloseAppCommand}"
+                CommandParameter="{Binding ElementName=Window}">
+            <Image Source="images/close.png" Width="23"/>
+        </Button>
+
+        <!--minimize button-->
+        <Button Style="{DynamicResource Buttons}" Height="35"
+                Width="35"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Margin="0,0,35,0"
+                Command="{Binding MinimizeAppCommand}"
+                CommandParameter="{Binding ElementName=Window}">
+            <Image Source="images/min.png" Width="15" Margin="0,10,0,0"/>
+        </Button>
+
+        <!--open parametrs-->
+        <Button Style="{DynamicResource Buttons}" Height="45"
+                Width="45"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding ManageMenuCommand}">
+            <Image Source="images/menu.png" Width="30"/>
+            
+            <Button.Triggers>
+                <EventTrigger RoutedEvent="Button.Click">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard TargetProperty="Height" TargetName="Menu">
+                                <DoubleAnimation
+                                    From="0"
+                                    To="325"
+                                    Duration="0:0:0.1"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+                
+            </Button.Triggers>
+        </Button>
+        
+        
+        <!--parametrs-->
+        <Border
+            x:Name="Menu"
+            Grid.RowSpan="2"
+            Background="#1f2023"
+            BorderThickness="0"
+            VerticalAlignment="Top"
+            Height="230"
+            CornerRadius="0,0,35,35">
+            <Grid x:Name="parGrid" >
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Grid>
+                    <TextBox Style="{DynamicResource TextBoxStyle}" 
+                    Margin="20,40,20,10"
+                         Background="#27292d"
+                         Foreground="White"
+                         Padding="7,7,0,0"
+                         FontSize="14"
+                         x:Name="linkBox"
+                             Text="{Binding Url}"/>
+                    
+                    <TextBlock
+                        Text="Paste the link"
+                        Foreground="DarkGray"
+                        Margin="20,40,20,10"
+                        Padding="7,7,0,0"
+                        FontSize="14"
+                        IsHitTestVisible="False">
+
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Text, ElementName=linkBox}" Value="">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+
+                <!--select selector--> 
+                <Grid Grid.Row="1">
+                    <ComboBox
+                        Height="30"
+                        Width="200"
+                        HorizontalAlignment="Left"
+                        Margin="20,0,0,0"
+                        SelectedIndex="0"
+                        SelectedValuePath="Content"
+                        SelectedValue="{Binding SelectedSelector}">
+
+                        <ComboBoxItem Content="a"/>
+                        <ComboBoxItem Content="h1"/>
+                        <ComboBoxItem Content="h2"/>
+                        <ComboBoxItem Content="h3"/>
+                        <ComboBoxItem Content="h4"/>
+                        <ComboBoxItem Content="h5"/>
+                        <ComboBoxItem Content="h6"/>
+                        <ComboBoxItem Content="b"/>
+                        <ComboBoxItem Content="em"/>
+                        <ComboBoxItem Content="i"/>
+                        <ComboBoxItem Content="small"/>
+                        <ComboBoxItem Content="p"/>
+                    </ComboBox>
+                </Grid>
+
+                <!--extra function , if user wants to parse ref with content from "a" tag-->
+                <StackPanel Visibility="Visible"
+                            Grid.Row="2"
+                            Orientation="Horizontal"
+                            Background="#1a1c1d">
+                    <ToggleButton Margin="20,0,0,0"
+                                  Style="{StaticResource toggleStyle}"
+                                  IsChecked="{Binding HrefState}"/>
+                    <TextBlock
+                        Text="Use href with content"
+                        Foreground="White"
+                        FontSize="14"
+                        VerticalAlignment="Center"
+                        Margin="20,0,0,0"/>
+                </StackPanel>
+
+                
+                <!--close menu button-->
+                <Button
+                    Grid.Row="3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    Height="40"
+                    Width="40"
+                    Margin="0,0,0,10"
+                    Background="{StaticResource color}"
+                    Style="{StaticResource RoundButtonStyle}"
+                    BorderThickness="0">
+                    <Image Source="images/close.png" Width="15"/>
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Button.Click">
+                            <EventTrigger.Actions>
+                                <BeginStoryboard>
+
+                                    <Storyboard TargetProperty="Height" TargetName="Menu">
+                                        <DoubleAnimation
+                                    From="325"
+                                    To="0"
+                                    Duration="0:0:0.1"/>
+                                    </Storyboard>
+
+                                </BeginStoryboard>
+                            </EventTrigger.Actions>
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+            </Grid>
+        </Border>
+
+    </Grid>
+</Window>
